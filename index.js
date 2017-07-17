@@ -31,10 +31,11 @@ module.exports = exports = function parse (schema, existingDefinitions, options)
 	var swagger;
 	var definitions = {};
 
-	if (parseAsType[options && options.customTypes && options.customTypes[schema._type] || schema._type]) {
-		swagger = parseAsType[schema._type](schema, existingDefinitions, definitions);
+	var type = options && options.customTypes && options.customTypes[schema._type] || schema._type;
+	if (parseAsType[type]) {
+		swagger = parseAsType[type](schema, existingDefinitions, definitions);
 	} else {
-		throw new TypeError(`${schema._type} is not a recognized Joi type.`);
+		throw new TypeError(`${type} is not a recognized Joi type.`);
 	}
 
 	if (schema._valids && schema._valids.has(null)) {
