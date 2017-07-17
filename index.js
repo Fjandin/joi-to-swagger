@@ -4,7 +4,7 @@ var joi = require('joi');
 var find = require('lodash.find');
 var get = require('lodash.get');
 
-module.exports = exports = function parse (schema, existingDefinitions) {
+module.exports = exports = function parse (schema, existingDefinitions, options) {
 	// inspect(schema);
 
 	if (!schema) throw new Error('No schema was passed.');
@@ -31,7 +31,7 @@ module.exports = exports = function parse (schema, existingDefinitions) {
 	var swagger;
 	var definitions = {};
 
-	if (parseAsType[schema._type]) {
+	if (parseAsType[options && options.customTypes && options.customTypes[schema._type] || schema._type]) {
 		swagger = parseAsType[schema._type](schema, existingDefinitions, definitions);
 	} else {
 		throw new TypeError(`${schema._type} is not a recognized Joi type.`);
